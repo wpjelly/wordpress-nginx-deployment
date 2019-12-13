@@ -54,18 +54,13 @@ service nginx restart && \
 
 # Install MySQL 8.0
 sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5 && \
-{ cat << EOF > /etc/apt/sources.list.d/mysql.list
-deb http://repo.mysql.com/apt/ubuntu/ bionic mysql-8.0
-EOF } && \
+echo "deb http://repo.mysql.com/apt/ubuntu/ bionic mysql-8.0" | sudo tee /etc/apt/sources.list.d/mysql.list && \
 apt-get update && \
 sudo debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password ${MYSQL_PASSWD}" && \
 sudo debconf-set-selections <<< "mysql-community-server mysql-community-server/re-root-pass password ${MYSQL_PASSWD}" && \
-sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server
+sudo DEBIAN_FRONTEND=noninteractive apt-get -y install mysql-server && \
 echo -e "[client]\nuser=root\npassword=\"${MYSQL_PASSWD}\"" | tee ~/.my.cnf && \
-{ cat << EOF > /etc/mysql/mysql.conf.d/default-auth-override.cnf
-[mysqld]
-default-authentication-plugin = mysql_native_password
-EOF } && \
+echo -e "[mysqld]\ndefault-authentication-plugin = mysql_native_password" | sudo tee /etc/mysql/mysql.conf.d/default-auth-override.cnf && \
 service mysql restart && \
 
 # Setup WordPress database
