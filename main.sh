@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-FQDN=""
-CERTBOT_EMAIL=""
+FQDN="$1"
+CERTBOT_EMAIL="$2"
 MYSQL_PASSWD="`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`"
 WP_MYSQL_PASSWD="$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)"
 WP_MYSQL_USER="$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)"
