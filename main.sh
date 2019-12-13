@@ -53,7 +53,7 @@ sed -i "s/fastcgi-cache.com/${FQDN}/g" /etc/nginx/sites-enabled/${FQDN} && \
 service nginx restart && \
 
 # Install MySQL 8.0
-sudo apt-key adv --keyserver pgp.mit.edu --recv-keys 5072E1F5 && \
+sudo apt-key adv --recv-keys --keyserver ha.pool.sks-keyservers.net 5072E1F5 && \
 echo "deb http://repo.mysql.com/apt/ubuntu/ bionic mysql-8.0" | sudo tee /etc/apt/sources.list.d/mysql.list && \
 apt-get update && \
 sudo debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password ${MYSQL_PASSWD}" && \
