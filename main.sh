@@ -88,4 +88,4 @@ sudo -u www-data wp --path=/sites/${FQDN}/public core install --url="${FQDN}" --
 #ln -fs /efs /sites/${FQDN}/public/wp-content/uploads && \
 #chown -h www-data. /sites/${FQDN}/public/wp-content/uploads
 
-echo -e "MySQL Root Password\n${MYSQL_PASSWD}\n\nWordPress Database Info\n${WP_MYSQL_DABATABSE}\n${WP_MYSQL_USER}\n${WP_MYSQL_PASSWD}\n\nWordPress ${WP_ADMIN_USER}\n${WP_ADMIN_PASSWD}" | tee -a ~/credentials
+echo -e "MySQL Root Password\n${MYSQL_PASSWD}\n\nWordPress Database Info\nDatabase: ${WP_MYSQL_DABATABSE}\nUser: ${WP_MYSQL_USER}\nPass: ${WP_MYSQL_PASSWD}\n\nWordPress\nUser: ${WP_ADMIN_USER}\nPass: ${WP_ADMIN_PASSWD}" | tee -a ~/credentials
