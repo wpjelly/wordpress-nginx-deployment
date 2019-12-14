@@ -184,7 +184,7 @@ install_mysql8() {
 #   None
 #######################################
 setup_database() {
-  mysql -e "
+  mysql -u root -p${MYSQL_PASSWD} -e "
 FLUSH PRIVILEGES;
 CREATE DATABASE ${WP_MYSQL_DATABASE};
 CREATE USER '${WP_MYSQL_USER}'@'localhost' IDENTIFIED BY '${WP_MYSQL_PASSWD}';
