@@ -175,6 +175,7 @@ install_mysql8() {
 #######################################
 # Setup database for WordPress
 # Globals:
+#   MYSQL_PASSWD
 #   WP_MYSQL_DATABASE
 #   WP_MYSQL_USER
 #   WP_MYSQL_PASSWD
