@@ -2,6 +2,7 @@
 
 FQDN="$1"
 CERTBOT_EMAIL="$2"
+WP_ADMIN_EMAIL="$2"
 MYSQL_PASSWD="`tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1`"
 WP_MYSQL_PASSWD="$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)"
 WP_MYSQL_USER="$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)"
@@ -53,7 +54,7 @@ sed -i "s/fastcgi-cache.com/${FQDN}/g" /etc/nginx/sites-enabled/${FQDN} && \
 service nginx restart && \
 
 # Install MySQL 8.0
-sudo apt-key adv --recv-keys --keyserver ha.pool.sks-keyservers.net 5072E1F5 && \
+sudo apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com 5072E1F5 && \
 echo "deb http://repo.mysql.com/apt/ubuntu/ bionic mysql-8.0" | sudo tee /etc/apt/sources.list.d/mysql.list && \
 apt-get update && \
 sudo debconf-set-selections <<< "mysql-community-server mysql-community-server/root-pass password ${MYSQL_PASSWD}" && \
@@ -80,7 +81,7 @@ chmod 755 /usr/local/bin/wp && \
 # Install WordPress
 sudo -u www-data wp --path=/sites/${FQDN}/public core download && \
 sudo -u www-data wp --path=/sites/${FQDN}/public config create --dbname="${WP_MYSQL_DATABASE}" --dbuser="${WP_MYSQL_USER}" --dbhost="127.0.0.1" --dbpass="${WP_MYSQL_PASSWD}" && \
-sudo -u www-data wp --path=/sites/${FQDN}/public core install --url="${FQDN}" --title="Wordpress Site" --admin_user="${WP_ADMIN_USER}" --admin_password="${WP_ADMIN_PASSWD}" --admin_email="${CERTBOT_EMAIL}" && \
+sudo -u www-data wp --path=/sites/${FQDN}/public core install --url="${FQDN}" --title="Wordpress Site" --admin_user="${WP_ADMIN_USER}" --admin_password="${WP_ADMIN_PASSWD}" --admin_email="${WP_ADMIN_EMAIL}" && \
 
 # Copy uploads content, remove original dir, and create symlink to efs
 #rsync -avzh /sites/${FQDN}/public/wp-content/uploads/ /efs && \
