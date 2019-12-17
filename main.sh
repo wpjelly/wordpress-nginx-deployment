@@ -28,7 +28,8 @@ main() {
   setup_database && \
   install_wpcli && \
   install_wordpress && \
-  save_credentials
+  save_credentials && \
+  setup_swap
 }
 
 #######################################
@@ -77,7 +78,7 @@ install_nginx() {
 install_php73() {
   add-apt-repository -y ppa:ondrej/php && \
   apt-get -y update && \
-  apt-get -y install php7.3-cli php7.3-common php7.3-fpm php7.3-mbstring php7.3-opcache php7.3-mysql && \
+  apt-get -y install php7.3-cli php7.3-common php7.3-fpm php7.3-mbstring php7.3-opcache php7.3-mysql php7.3-gd  && \
 
   return 0 || \
   err "Unable to install PHP 7.3"
@@ -266,6 +267,29 @@ setup_efs() {
     return 0 || \
     err "Could not setup EFS"
   fi
+}
+
+#######################################
+# Install cachesfilesd and mount EFS
+# Globals:
+#   EFS_ADDR
+#   FQDN
+# Arguements:
+#   None
+# Returns:
+#   None
+# Note: Only ran if EFS_ADDR is set
+#######################################
+setup_swap() {
+  sudo fallocate -l 1G /swapfile && \
+  sudo chmod 600 /swapfile && \
+  sudo mkswap /swapfile && \
+  sudo swapon /swapfile && \
+  echo "/swapfile swap swap defaults 0 0" | tee -a /etc/fstab && \
+
+  return 0 || \
+  err "Could not setup swap"
+
 }
 
 #######################################
